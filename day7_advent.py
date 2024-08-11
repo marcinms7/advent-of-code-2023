@@ -10,13 +10,15 @@ from collections import Counter
 CARDS = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
 temp = len(CARDS) + 1
 MAPPED_CARDS = {k: temp - CARDS.index(k) for k in CARDS}
-MAPPED_TYPES = {"Five": 10,
-                "Four": 9,
-                "Full House": 8,
-                "Three": 7,
-                "Two Pair": 6,
-                "Pair": 5,
-                "High Card" :4}
+MAPPED_TYPES = {
+    "Five": 10,
+    "Four": 9,
+    "Full House": 8,
+    "Three": 7,
+    "Two Pair": 6,
+    "Pair": 5,
+    "High Card": 4,
+}
 
 """
 Five of a kind, where all five cards have the same label: AAAAA
@@ -31,6 +33,7 @@ Two pair, where two cards share one label, two other cards share a second label,
 One pair, where two cards share one label, and the other three cards have a different label from the pair and each other: A23A4
 High card, where all cards' labels are distinct: 23456
 """
+
 
 def cards_preanalysis(cards: str):
     unique_cards = set(cards)
@@ -50,29 +53,32 @@ def cards_preanalysis(cards: str):
             if cards.count(card) == 3:
                 return "Three"
         return "Two Pair"
-    
-def compare_cards(card1: str, card2: str)->str:
+
+
+def compare_cards(card1: str, card2: str) -> str:
     if card1 == card2:
         return None
     if MAPPED_CARDS[card1] > MAPPED_CARDS[card2]:
         return card1
     return card2
-    
-    
-def compare_hands_high_card(hand1: str, hand2: str)->str:
+
+
+def compare_hands_high_card(hand1: str, hand2: str) -> str:
     if hand1 == hand2:
         return None
     for card1, card2 in zip(hand1, hand2):
         result = compare_cards(card1, card2)
         if result:
             return result
-    
-def compare_hands_full(hand1: str, hand2: str)->str:
+
+
+def compare_hands_full(hand1: str, hand2: str) -> str:
     if hand1 == hand2:
         return None
     if MAPPED_TYPES[cards_preanalysis(hand1)] > MAPPED_TYPES[cards_preanalysis(hand2)]:
         return hand1
     return hand2
+
 
 GAME = """757T6 637
 TTT2T 589
@@ -1075,40 +1081,22 @@ Q9QQQ 891
 6262A 585
 K2K2K 947"""
 
+import itertools
 
 
 GAME.splitlines()
 
-bids = {line.split(" ")[0] :  line.split(" ")[1] for line in GAME.splitlines()}
-games = {line.split(" ")[0] :  1 for line in GAME.splitlines()}
+bids = {line.split(" ")[0]: line.split(" ")[1] for line in GAME.splitlines()}
+games = {line.split(" ")[0]: 1 for line in GAME.splitlines()}
 list_of_games = list(games.keys())
-# creating unique games
-# unique_games = []
-# timer = 0
-# for i in list_of_games:
-#     for j in list_of_games:
-#         current_game = set((i,j))
-#         if i != j :
-#         # and current_game not in unique_games:
-#             unique_games.append(current_game)
-        
-#         timer+=1
-#         print(timer)
-    
-# import itertools
-# unique_games = [list(i) for i in unique_games]
-# unique_games.sort()
-# unique_games = list(k for k,_ in itertools.groupby(unique_games))
 
-import itertools
 unique_games = list(itertools.combinations(list_of_games, 2))
 
 
 for game in unique_games:
     winner = compare_hands_full(list(game)[0], list(game)[1])
     if winner:
-        games[winner]+=1
-
+        games[winner] += 1
 
 
 result = 0
@@ -1122,7 +1110,7 @@ print(f"Results are {result}")
 PART 2
 """
 
-CARDS = ["A", "K", "Q",  "T", "9", "8", "7", "6", "5", "4", "3", "2","J"]
+CARDS = ["A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J"]
 temp = len(CARDS) + 1
 MAPPED_CARDS = {k: temp - CARDS.index(k) for k in CARDS}
 
@@ -1150,55 +1138,20 @@ def cards_preanalysis(cards: str):
 
 GAME.splitlines()
 
-bids = {line.split(" ")[0] :  line.split(" ")[1] for line in GAME.splitlines()}
-games = {line.split(" ")[0] :  1 for line in GAME.splitlines()}
+bids = {line.split(" ")[0]: line.split(" ")[1] for line in GAME.splitlines()}
+games = {line.split(" ")[0]: 1 for line in GAME.splitlines()}
 list_of_games = list(games.keys())
 import itertools
+
 unique_games = list(itertools.combinations(list_of_games, 2))
 
 for game in unique_games:
     winner = compare_hands_full(list(game)[0], list(game)[1])
     if winner:
-        games[winner]+=1
+        games[winner] += 1
 
 result = 0
 for game in list_of_games:
     number = int(bids[game]) * games[game]
     result += number
 print(f"Results of PART 2 are {result}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
- 
- 
- 
- 
- 
-
- 
- 
- 

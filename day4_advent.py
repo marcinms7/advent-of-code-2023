@@ -220,19 +220,24 @@ Card 211: 61 30 95 15 73 81 69 52 26  3 | 59  8 35 56 83  5 41 71 45  4 91 73 51
 Card 212: 98 19 95 93 62 76 36 70  1 55 |  5 22 21 58 75 85 31 67 49 73 47 90 34 24 99 37 50 11 23 48 96 87  6 29 91
 """
 
-lines= INPUT.splitlines()
+lines = INPUT.splitlines()
+
 
 def process_input_line(line: str):
     results = {}
     processed = line.split(":")[1].split("|")
-    results['winning_numbers'] = set([i for i in processed[0].split(" ") if i])
-    results['owned_numbers'] = set([i for i in processed[1].split(" ") if i])
+    results["winning_numbers"] = set([i for i in processed[0].split(" ") if i])
+    results["owned_numbers"] = set([i for i in processed[1].split(" ") if i])
     return results
+
 
 def winning_cards_from_line(line: str):
     proccessed_line = process_input_line(line)
-    return proccessed_line['winning_numbers'].intersection(proccessed_line['owned_numbers'])
-    
+    return proccessed_line["winning_numbers"].intersection(
+        proccessed_line["owned_numbers"]
+    )
+
+
 def points_from_len(winning_cards):
     if not winning_cards:
         return 0
@@ -244,6 +249,7 @@ def points_from_len(winning_cards):
             number *= 2
     return number
 
+
 points = 0
 for line in lines:
     points += points_from_len(winning_cards_from_line(line))
@@ -252,31 +258,27 @@ for line in lines:
 """
 PART 2
 """
-def points_from_len_part2(winning_cards: list)-> int:
+
+
+def points_from_len_part2(winning_cards: list) -> int:
     if not winning_cards:
         return 0
     return len(winning_cards)
 
-def list_of_won_cards_part2(current_card_no: str, won_cards: dict)->list:
-    return [str(i + 1 + int(current_card_no)) for i in range(won_cards[current_card_no] )]
 
-# cards = 0
-# total_cards = 1 #including copies
-# line_number = 0
-# for line in lines:
-#     line_number += 1
-#     total_cards+= points_from_len_part2(winning_cards_from_line(line))
-#     cards = max(points_from_len_part2(winning_cards_from_line(line)), cards)
-#     cards -= 1
-#     if cards ==0:
-#         print(f"Ended with {line_number} cards, with copies, you've won {total_cards} cards")
-#         break
+def list_of_won_cards_part2(current_card_no: str, won_cards: dict) -> list:
+    return [
+        str(i + 1 + int(current_card_no)) for i in range(won_cards[current_card_no])
+    ]
+
 
 won_cards_numbers = {}
 current_number = 0
 for line in lines:
     current_number += 1
-    won_cards_numbers[str(current_number)] = points_from_len_part2(winning_cards_from_line(line))
+    won_cards_numbers[str(current_number)] = points_from_len_part2(
+        winning_cards_from_line(line)
+    )
 
 owned_cards = []
 cards_to_check = list(won_cards_numbers.keys())
@@ -284,47 +286,3 @@ while cards_to_check:
     checking = cards_to_check.pop(-1)
     owned_cards.append(checking)
     cards_to_check += list_of_won_cards_part2(checking, won_cards_numbers)
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        

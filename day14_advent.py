@@ -109,72 +109,65 @@ OO.#...O...O#.......OO.OOO#.O#....#.OO...O..OO....OO#O.O#....O..O....O..O.O..O..
 
 CONVERGENCE = 1
 
-# def move_north(coordinates: tuple, matrix: list):
-#     row, col = coordinates[0], coordinates[1]
-#     if row == 0:
-#         return matrix
-#     if matrix[row][col] == "O" and matrix[row-1][col] == ".":
-#         matrix[row][col], matrix[row-1][col] = ".","O"
-#     return matrix
 
 def move_north(coordinates: tuple, matrix: list):
     row, col = coordinates[0], coordinates[1]
     while True:
         if row == 0:
             return matrix
-        previous_val = matrix[row-1][col]
+        previous_val = matrix[row - 1][col]
         if previous_val == "#" or previous_val == "O":
             return matrix
         if matrix[row][col] == "O" and previous_val == ".":
-            matrix[row][col], matrix[row-1][col] = ".","O"
+            matrix[row][col], matrix[row - 1][col] = ".", "O"
         row -= 1
-        
+
+
 def move_south(coordinates: tuple, matrix: list):
     row, col = coordinates[0], coordinates[1]
     while True:
         if row == len(matrix) - 1:
             return matrix
-        next_val = matrix[row+1][col]
+        next_val = matrix[row + 1][col]
         if next_val == "#" or next_val == "O":
             return matrix
         if matrix[row][col] == "O" and next_val == ".":
-            matrix[row][col], matrix[row+1][col] = ".","O"
+            matrix[row][col], matrix[row + 1][col] = ".", "O"
         row += 1
+
 
 def move_east(coordinates: tuple, matrix: list):
     row, col = coordinates[0], coordinates[1]
     while True:
         if col == len(matrix[0]) - 1:
             return matrix
-        next_val = matrix[row][col+1]
+        next_val = matrix[row][col + 1]
         if next_val == "#" or next_val == "O":
             return matrix
         if matrix[row][col] == "O" and next_val == ".":
-            matrix[row][col], matrix[row][col+1] = ".","O"
+            matrix[row][col], matrix[row][col + 1] = ".", "O"
         col += 1
+
 
 def move_west(coordinates: tuple, matrix: list):
     row, col = coordinates[0], coordinates[1]
     while True:
         if col == 0:
             return matrix
-        prev_val = matrix[row][col-1]
+        prev_val = matrix[row][col - 1]
         if prev_val == "#" or prev_val == "O":
             return matrix
         if matrix[row][col] == "O" and prev_val == ".":
-            matrix[row][col], matrix[row][col-1] = ".","O"
+            matrix[row][col], matrix[row][col - 1] = ".", "O"
         col -= 1
-
-
-
 
 
 NEWBOARD = [list(b) for b in BOARD.splitlines()]
 
 
-for row in range (len(NEWBOARD)):
+for row in range(len(NEWBOARD)):
     for col in range(len(NEWBOARD[row])):
-        NEWBOARD = move_north((row,col), NEWBOARD)
+        NEWBOARD = move_north((row, col), NEWBOARD)
 
 
 # count points
@@ -183,38 +176,41 @@ lenboard = len(NEWBOARD)
 for i in range(lenboard):
     number_of_Os = NEWBOARD[i].count("O")
     algo_row = lenboard - i
-    
+
     print(number_of_Os, algo_row)
     points += number_of_Os * algo_row
-    
+
 # PART 2
 import time
 
 print("hello")
 
 NEWBOARD = [list(b) for b in BOARD.splitlines()]
-def spinning_cycle(board: list)->list:
+
+
+def spinning_cycle(board: list) -> list:
     # north
     start = time.time()
 
-    for row in range (len(board)):
+    for row in range(len(board)):
         for col in range(len(board[row])):
-            board = move_north((row,col), board)
+            board = move_north((row, col), board)
     # west
     for row in range(len(board)):
         for col in range(len(board[row])):
-            board = move_west((row,col), board)
+            board = move_west((row, col), board)
     # south
     for row in reversed(range(len(board))):
         for col in range(len(board[row])):
-            board = move_south((row,col), board)
+            board = move_south((row, col), board)
     # east
-    for row in range (len(board)):
+    for row in range(len(board)):
         for col in reversed(range(len(board[row]))):
-            board = move_east((row,col), board)
+            board = move_east((row, col), board)
     end = time.time()
     # print(end - start)
     return board
+
 
 comparetest = [list(b) for b in BOARD.splitlines()]
 for i in range(10):
@@ -229,33 +225,6 @@ lenboard = len(NEWBOARD)
 for i in range(lenboard):
     number_of_Os = NEWBOARD[i].count("O")
     algo_row = lenboard - i
-    
+
     print(number_of_Os, algo_row)
     points += number_of_Os * algo_row
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    

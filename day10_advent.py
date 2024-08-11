@@ -149,9 +149,8 @@ L-JL-|---.J-7|7|.F7-JF----FJL-7-|FJ|LFFF--LJ|F-|-7|J|LL||FJLL-J-FF-|JFL7L|JL7.L-
 
 MATRIX = [list(l) for l in MATRIX.splitlines()]
 
-def traverse_one(current_coordinates: tuple,
-             previous_coordinates: tuple,
-             matrix: str):
+
+def traverse_one(current_coordinates: tuple, previous_coordinates: tuple, matrix: str):
     """
     | is a vertical pipe connecting north and south.
     - is a horizontal pipe connecting east and west.
@@ -162,103 +161,71 @@ def traverse_one(current_coordinates: tuple,
     . is ground; there is no pipe in this tile.
     S is the starting position of the animal; there is a pipe on this tile, but your sketch doesn't show what shape the pipe has.
     """
-    row,col = current_coordinates[0], current_coordinates[1]
+    row, col = current_coordinates[0], current_coordinates[1]
     prev_row, prev_col = previous_coordinates[0], previous_coordinates[1]
-    
+
     sign = matrix[row][col]
     print(f"Sign is {sign} at coordinates {row},{col}.")
-    
+
     if sign == "|":
         if prev_row < row:
-            return (row+1, col)
-        return (row-1, col)
+            return (row + 1, col)
+        return (row - 1, col)
     if sign == "-":
         if prev_col < col:
-            return (row, col+1)
-        return (row, col-1)
+            return (row, col + 1)
+        return (row, col - 1)
     if sign == "L":
         if prev_row < row:
-            return (row, col+1)
-        return (row-1, col)
+            return (row, col + 1)
+        return (row - 1, col)
     if sign == "J":
         if prev_row < row:
-            return (row, col-1)
-        return (row-1, col)
+            return (row, col - 1)
+        return (row - 1, col)
     if sign == "7":
         if prev_row > row:
-            return (row, col-1)
-        return (row+1, col)
+            return (row, col - 1)
+        return (row + 1, col)
     if sign == "F":
         if prev_row > row:
-            return (row, col+1)
-        return (row+1, col)
+            return (row, col + 1)
+        return (row + 1, col)
     if sign == ".":
         return None
     if sign == "S":
         print("HERE")
-        return (None)
+        return None
 
 
 def find_S(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
             if matrix[i][j] == "S":
-                print((i,j))
-                return (i,j)
-            
-            
-def traverse_from_point(starting_, step_, max_steps = 1000):
+                print((i, j))
+                return (i, j)
+
+
+def traverse_from_point(starting_, step_, max_steps=1000):
     counter = 1
-    
-    new_temp = traverse_one(current_coordinates = step_, 
-                 previous_coordinates = starting_, matrix = MATRIX)
+
+    new_temp = traverse_one(
+        current_coordinates=step_, previous_coordinates=starting_, matrix=MATRIX
+    )
     for i in range(max_steps):
         starting_ = step_
         step_ = new_temp
-        new_temp = traverse_one(current_coordinates = step_, 
-                     previous_coordinates = starting_, matrix = MATRIX)
+        new_temp = traverse_one(
+            current_coordinates=step_, previous_coordinates=starting_, matrix=MATRIX
+        )
         counter += 1
-        
+
         if MATRIX[new_temp[0]][new_temp[1]] == "S":
             print(f"LOOP ACHIEVED AFTER {counter} STEPS")
             print(new_temp)
             return new_temp
-    
 
 
 find_S(MATRIX)
-traverse_from_point((31, 28),          (32, 28), 10000000)
-traverse_from_point((31, 28),          (31, 27), 10000000)
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+traverse_from_point((31, 28), (32, 28), 10000000)
+traverse_from_point((31, 28), (31, 27), 10000000)
